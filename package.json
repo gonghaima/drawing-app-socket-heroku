@@ -4,6 +4,7 @@
   "description": "A realtime drawing app using socketIO",
   "main": "server.js",
   "scripts": {
+    "start": "node server.js",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "Gabriel Tanner",
