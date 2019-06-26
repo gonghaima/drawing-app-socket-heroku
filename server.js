@@ -44,14 +44,20 @@ server.on('listening', () => {
 	console.log('Listening on ' + bind)
 })
 
-
 // Web sockets
 const io = require('socket.io')(server)
 
-io.sockets.on('connection', (socket) => {
+io.sockets.on('connection', socket => {
 	console.log('Client connected: ' + socket.id)
+	socket.join('drawingRoom')
 
-	socket.on('mouse', (data) => socket.broadcast.emit('mouse', data))
+	socket.on('mouse', data => {
+		const clients = io.sockets.adapter.rooms['drawingRoom'].sockets
+		for (const clientId in clients) {
+			const clientSocket = io.sockets.connected[clientId]
+			clientSocket.emit('mouse', data)
+		}
+	})
 
 	socket.on('disconnect', () => console.log('Client has disconnected'))
 })
